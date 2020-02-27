@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/re_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bg_register" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <EditText
+                android:id="@+id/et_phone_re"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/login_edit_bg"
+                android:hint="填写要注册电话号码"
+                android:inputType="phone"
+                android:padding="5dp" />
+
+            <EditText
+                android:id="@+id/et_pwd_re"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_edit_bg"
+                android:hint="输入密码"
+                android:inputType="textPassword"
+                android:padding="5dp" />
+
+            <EditText
+                android:id="@+id/et_pwd_re_again"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_edit_bg"
+                android:hint="再一次输入密码"
+                android:inputType="textPassword"
+                android:padding="5dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
+        android:id="@+id/bt_re_register"
+        android:layout_below="@+id/re_layout"
+        android:layout_centerInParent="true"
+        android:background="@drawable/button_circle_shape"
+        android:src="@drawable/jiantou" />
+
+</RelativeLayout>

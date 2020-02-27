@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- android9.0以后禁止http协议，需要这样配置才能够继续使用-->
+<network-security-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
