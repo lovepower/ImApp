@@ -1,9 +1,12 @@
 package com.example.meet.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +17,9 @@ import android.widget.Toast;
 import com.example.meet.R;
 import com.liuguilin.framework.base.BaseUIActivity;
 import com.liuguilin.framework.entity.Constants;
+import com.liuguilin.framework.entity.StatusCode;
 import com.liuguilin.framework.manager.DialogManager;
+import com.liuguilin.framework.manager.HttpManager;
 import com.liuguilin.framework.utils.SpUtils;
 import com.liuguilin.framework.view.DialogView;
 import com.liuguilin.framework.view.LodingView;
@@ -22,6 +27,8 @@ import com.liuguilin.framework.view.TouchPictureV;
 
 public class LoginActivity extends BaseUIActivity implements View.OnClickListener{
 
+    private static final int login_suc_code = 1000;
+    private static final int login_err_code = 1001;
     private EditText et_phone;
     private EditText et_pwd;
     private ImageButton ib_login;
@@ -33,6 +40,20 @@ public class LoginActivity extends BaseUIActivity implements View.OnClickListene
     private TextView tv_test_login;
 
     private LodingView mLodingView;
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message msg) {
+            switch (msg.what){
+                case login_suc_code:
+                    Toast.makeText(LoginActivity.this,"登录成功！",Toast.LENGTH_SHORT).show();
+                    break;
+                case login_err_code:
+                    Toast.makeText(LoginActivity.this,"用户名或密码不对",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return false;
+        }
+    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,11 +123,21 @@ public class LoginActivity extends BaseUIActivity implements View.OnClickListene
          * 登录操作
          *
          */
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new Thread(){
+            public void run(){
+                StatusCode statusCode = HttpManager.getInstance().login(phone,code);
+                if (statusCode.getStatus().equalsIgnoreCase("200")){
+                    mLodingView.hide();
+                    SpUtils.getInstance().putString(Constants.SP_TOKEN,statusCode.getToken());
+                    mHandler.sendEmptyMessage(login_suc_code);
+                    return;
+                }else {
+                    mLodingView.hide();
+                    mHandler.sendEmptyMessage(login_err_code);
+                    return;
+                }
+            }
+        }.start();
     }
 
     /**
